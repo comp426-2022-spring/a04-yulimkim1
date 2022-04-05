@@ -23,5 +23,32 @@ if (args.help) {
     )
 }
 
+else {
+    var express = require("express")
+    var app = express()
+    var morgan = require("morgan")
+    var fs = require("fs")
+
+    const db = require("./database.js")
+    app.use(express.urlencoded({ extended: true }));
+    app.use(express.json());
+
+    var HTTP_PORT = args.port || process.env.PORT || 5555
+    const debug = args.debug || false
+    const log = args.log || false 
+
+    if(log) {
+
+    }
+
+    // Start server
+    const server = app.listen(HTTP_PORT, () => {
+    console.log("Server running on port %PORT%".replace("%PORT%",HTTP_PORT))
+    });
+    
+
+
+
+}
 
 
