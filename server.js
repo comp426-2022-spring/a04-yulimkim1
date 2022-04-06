@@ -65,15 +65,13 @@ else {
             useragent: req.headers['user-agent']
         }
 
-        let sqlWrite = `INSERT INTO acceslog VALUES ('remoteaddr', 'remoteuser', 'time', 'method', 'url', 'protocol', 'httpversion', 'status', 'referer', 'useragent')`
-
+        let sqlWrite = `INSERT INTO acceslog VALUES ('time', 'remoteaddr', 'remoteuser', 'method', 'url', 'protocol', 'httpversion', 'status', 'referer', 'useragent')`
 
         for (const [key, value] of Object.entries(logdata)) {
             sqlWrite - sqlWrite.replace(key, value)
         }
 
         next()
-
 
         })
     
