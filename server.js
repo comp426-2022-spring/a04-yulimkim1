@@ -85,14 +85,9 @@ if (debug) {
         }
     })
     app.get('/app/error', (req, res) => {
-        throw new Error('Error test successful.') // Express will catch this on its own.
+        throw new Error('Error test successful.')
       })
 }
-
-    
-    
-
-
 
 }
 
