@@ -38,7 +38,11 @@ else {
     const log = args.log || false 
 
     if(log) {
-
+        // Use morgan for logging to files
+        // Create a write stream to append (flags: 'a') to a file
+        const accesslog = fs.createWriteStream('access.log', { flags: 'a' })
+        // Set up the access logging middleware
+        app.use(morgan('FORMAT', { stream: accesslog }))
     }
 
     // Start server
