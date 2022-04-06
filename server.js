@@ -49,6 +49,33 @@ else {
     const server = app.listen(HTTP_PORT, () => {
     console.log("Server running on port %PORT%".replace("%PORT%",HTTP_PORT))
     });
+
+    app.use( (req, res, next) => {
+        // Your middleware goes here.
+        let logdata = {
+            remoteaddr: req.ip,
+            remoteuser: req.user,
+            time: Date.now(),
+            method: req.method,
+            url: req.url,
+            protocol: req.protocol,
+            httpversion: req.httpVersion,
+            status: res.statusCode,
+            referer: req.headers['referer'],
+            useragent: req.headers['user-agent']
+        }
+
+        let sqlWrite = `INSERT INTO acceslog VALUES ('remoteaddr', 'remoteuser', 'time', 'method', 'url', 'protocol', 'httpversion', 'status', 'referer', 'useragent')`
+
+
+        for (const [key, value] of Object.entries(logdata)) {
+            sqlWrite - sqlWrite.replace(key, value)
+        }
+
+        next()
+
+
+        })
     
 
 
