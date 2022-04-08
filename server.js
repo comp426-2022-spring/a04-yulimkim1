@@ -32,7 +32,18 @@ if (args.help) {
     process.exit(0)
 }
 
+var HTTP_PORT = args.port || process.env.PORT || 5555
+const debug = args.debug || false
+const log = args.log || true 
 
+const server = app.listen(HTTP_PORT, () => {
+    console.log("Server running on port %PORT%".replace("%PORT%",HTTP_PORT))
+});
+
+if (log != "false") {
+    const accessLog = fs.createWriteStream('access.log', { flags: 'a' })
+    app.use(morgan('FORMAT', { stream: accessLog }))
+}
 
 
 /*
