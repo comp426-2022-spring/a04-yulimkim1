@@ -4,6 +4,13 @@ const args = minimist(process.argv.slice(2))
 
 args["help", "port", "debug", "log"]
 
+var express = require("express")
+var app = express()
+var morgan = require("morgan")
+var fs = require("fs")
+const db = require("./database.js")
+
+
 if (args.help) {
     console.log(
         `server.js [options]
@@ -21,34 +28,18 @@ if (args.help) {
       
         --help	Return this message and exit.`
     )
+    process.exit(0)
 }
 
-else {
-    var express = require("express")
-    var app = express()
-    var morgan = require("morgan")
-    var fs = require("fs")
 
-    const db = require("./database.js")
-    app.use(express.urlencoded({ extended: true }));
-    app.use(express.json());
 
-    var HTTP_PORT = args.port || process.env.PORT || 5555
-    const debug = args.debug || false
-    const log = args.log || false 
 
-    if(log) {
-        // Use morgan for logging to files
-        // Create a write stream to append (flags: 'a') to a file
-        const accesslog = fs.createWriteStream('access.log', { flags: 'a' })
-        // Set up the access logging middleware
-        app.use(morgan('FORMAT', { stream: accesslog }))
-    }
+app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
 
-    // Start server
-    const server = app.listen(HTTP_PORT, () => {
-    console.log("Server running on port %PORT%".replace("%PORT%",HTTP_PORT))
-    });
+var HTTP_PORT = args.port || process.env.PORT || 5555
+const debug = args.debug || false
+const log = args.log || false 
 
 app.use( (req, res, next) => {
     // Your middleware goes here.
@@ -64,6 +55,22 @@ app.use( (req, res, next) => {
         referer: req.headers['referer'],
         useragent: req.headers['user-agent']
     }
+    
+
+if(log) {
+    // Use morgan for logging to files
+    // Create a write stream to append (flags: 'a') to a file
+    const accesslog = fs.createWriteStream('access.log', { flags: 'a' })
+    // Set up the access logging middleware
+    app.use(morgan('FORMAT', { stream: accesslog }))
+    }
+
+    // Start server
+    const server = app.listen(HTTP_PORT, () => {
+    console.log("Server running on port %PORT%".replace("%PORT%",HTTP_PORT))
+    });
+
+
 
     let sqlWrite = `INSERT INTO acceslog VALUES ('time', 'remoteaddr', 'remoteuser', 'method', 'url', 'protocol', 'httpversion', 'status', 'referer', 'useragent')`
 
@@ -89,6 +96,6 @@ if (debug) {
       })
 }
 
-}
+
 
 
