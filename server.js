@@ -12,9 +12,9 @@ app.use(express.urlencoded({ extended: true }));
 
 args["help", "port", "debug", "log"]
 
-if (args.help) {
-    console.log(
-        `server.js [options]
+if (args["help"]) {
+    const ht = `server.js [options]
+
     --por		Set the port number for the server to listen on. Must be an integer
                     between 1 and 65535.
   
@@ -27,7 +27,7 @@ if (args.help) {
           Logs are always written to database.
   
     --help	Return this message and exit.`
-    )
+    console.log(ht)
     process.exit(0)
 }
 
