@@ -43,7 +43,7 @@ const server = app.listen(HTTP_PORT, () => {
 
 if (log != "false") {
     const accesslog = fs.createWriteStream('access.log', { flags: 'a' })
-    app.use(morgan('FORMAT', { stream: accesslog }))
+    app.use(morgan('combined', { stream: accesslog }))
 }
 
 app.use( (req, res, next) => {
@@ -70,6 +70,8 @@ app.get("/app/", (req, res) => {
 	res.status(200);
     res.json({"message":"Your API works! (200)"});
 });
+
+
 
 if (debug != "false") {
     app.get("/app/log/access", (req, res) => {
