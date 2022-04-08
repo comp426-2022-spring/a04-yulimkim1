@@ -46,7 +46,7 @@ if (log != "false") {
 
 app.use( (req, res, next) => {
     // Your middleware goes here.
-    let logdata = {
+let logdata = {
         remoteaddr: req.ip,
         remoteuser: req.user,
         time: Date.now(),
@@ -58,12 +58,33 @@ app.use( (req, res, next) => {
         referer: req.headers['referer'],
         useragent: req.headers['user-agent']
     }
-
     const stmt = db.prepare('INSERT INTO accesslog (time, remoteaddr, remoteuser, method, url, protocol, httpversion, secure, status, referer, useragent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
     const table_info = stmt.run(logdata.time, logdata.remoteaddr, logdata.remoteuser, logdata.method, logdata.url, logdata.protocol, logdata.httpversion, logdata.secure ? 1 : 0, logdata.status, logdata.referer, logdata.useragent);
     res.status(200);
     next();
+});
 
+app.get("/app/", (req, res) => {
+	res.status(200);
+    res.json({"message":"Your API works! (200)"});
+});
+
+if (debug != "false") {
+    app.get("/app/log/access", (req, res) => {
+        try {
+            const stmt = db.prepare('SELECT * FROM accesslog').all();
+            res.status(200).json(stmt)
+        } catch {
+            console.error(e)
+        }
+    });
+    app.get('/app/error', (req, res) => {
+        throw new Error('Error test successful.')
+    });
+}
+app.use(function (req, res) {
+    res.status(404).send('404 NOT FOUND')
+});
 
 /*
 const minimist = require("minimist")
