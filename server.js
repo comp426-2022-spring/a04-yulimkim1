@@ -12,22 +12,24 @@ app.use(express.urlencoded({ extended: true }));
 
 args["help", "port", "debug", "log"]
 
-if (args["help"]) {
-    const ht = `server.js [options]
-
-    --por		Set the port number for the server to listen on. Must be an integer
-                    between 1 and 65535.
-  
+if (args.help || args.h) {
+    const help = (`
+    server.js [options]
+    
+    --port	Set the port number for the server to listen on. Must be an integer
+                between 1 and 65535.
+    
     --debug	If set to true, creates endlpoints /app/log/access/ which returns
-                    a JSON access log from the database and /app/error which throws 
-                    an error with the message "Error test successful." Defaults to 
-          false.
-  
+                a JSON access log from the database and /app/error which throws 
+                an error with the message "Error test successful." Defaults to 
+                false.
+    
     --log		If set to false, no log files are written. Defaults to true.
-          Logs are always written to database.
-  
-    --help	Return this message and exit.`
-    console.log(ht)
+                Logs are always written to database.
+    
+    --help	Return this message and exit.
+    `)
+    console.log(help)
     process.exit(0)
 }
 
@@ -40,8 +42,8 @@ const server = app.listen(HTTP_PORT, () => {
 });
 
 if (log != "false") {
-    const accessLog = fs.createWriteStream('access.log', { flags: 'a' })
-    app.use(morgan('FORMAT', { stream: accessLog }))
+    const accesslog = fs.createWriteStream('access.log', { flags: 'a' })
+    app.use(morgan('FORMAT', { stream: accesslog }))
 }
 
 app.use( (req, res, next) => {
