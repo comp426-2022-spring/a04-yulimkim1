@@ -65,13 +65,32 @@ let logdata = {
     res.status(200);
     next();
 });
-
+/*
 app.get("/app/", (req, res) => {
 	res.status(200);
     res.json({"message":"Your API works! (200)"});
 });
-
-
+*/
+app.get('/app/', (req, res) => {
+    res.status(200).end("OK")
+    res.type('text/plain')
+})
+app.get('/app/flip/', (req, res) => {
+    res.status(200).json({'flip': coinFlip()})
+})
+app.get('/app/flips/:number/', (req, res) => {
+    res.status(200).json({'raw': coinFlips(req.params.number), 'summary': countFlips(coinFlips(req.params.number))})
+})
+app.get('/app/flip/call/tails/', (req, res) => {
+    res.status(200).json(flipACoin('tails'))
+})
+app.get('/app/flip/call/heads/', (req, res) => {
+    res.status(200).json(flipACoin('heads'))
+})
+app.use(function(req, res) {
+    res.status(404).send("Endpoint does not exist")
+    res.type("text/plain")
+})
 
 if (debug != "false") {
     app.get("/app/log/access", (req, res) => {
