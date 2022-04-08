@@ -1,3 +1,19 @@
+const minimist = require('minimist')
+const express = require('express')
+const app = express()
+const fs = require('fs')
+const morgan = require('morgan')
+
+const db = require("./database.js")
+const args = minimist(process.argv.slice(2))
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+args["help", "port", "debug", "log"]
+
+
+/*
 const minimist = require("minimist")
 
 const args = minimist(process.argv.slice(2))
@@ -55,7 +71,9 @@ app.use( (req, res, next) => {
         referer: req.headers['referer'],
         useragent: req.headers['user-agent']
     }
+
     
+
 
 if(log) {
     // Use morgan for logging to files
@@ -72,7 +90,6 @@ if(log) {
 
 
 
-    let sqlWrite = `INSERT INTO acceslog VALUES ('time', 'remoteaddr', 'remoteuser', 'method', 'url', 'protocol', 'httpversion', 'status', 'referer', 'useragent')`
 
     for (const [key, value] of Object.entries(logdata)) {
         sqlWrite - sqlWrite.replace(key, value)
@@ -95,7 +112,7 @@ if (debug) {
         throw new Error('Error test successful.')
       })
 }
-
+*/
 
 
 
