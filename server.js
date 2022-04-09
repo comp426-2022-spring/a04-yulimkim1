@@ -145,3 +145,9 @@ if (debug != "false") {
 app.use(function (req, res) {
     res.status(404).send('404 NOT FOUND')
 });
+
+process.on('SIGTERM', () => {
+    server.close(() => {
+        console.log('Server stopped')
+    })
+})
