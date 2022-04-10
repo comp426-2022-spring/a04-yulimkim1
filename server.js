@@ -46,7 +46,7 @@ if (log != "false") {
     app.use(morgan('combined', { stream: accesslog }))
 }
 
-app.use((req, res, next) => {
+app.post("/",(req, res, next) => {
 let logdata = {
         remoteaddr: req.ip,
         remoteuser: req.user,
