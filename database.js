@@ -12,6 +12,8 @@ if (row === undefined) {
          remoteaddr TEXT, remoteuser TEXT, time INTEGER, method TEXT, url TEXT,
           protocol TEXT, httpversion TEXT, status INTEGER, referer TEXT, useragent TEXT);`;
     db.exec(sqlInit);
-} 
+} else {
+    console.log("Database exists");
+}
 
 module.exports = db
