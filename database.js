@@ -10,7 +10,7 @@ let row = stmt.get();
 if (row === undefined) {
     const sqlInit = `CREATE TABLE accesslog ( id INTEGER NOT NULL PRIMARY KEY,
          remoteaddr TEXT, remoteuser TEXT, time INTEGER, method TEXT, url TEXT,
-          protocol TEXT, httpversion TEXT, status INTEGER, referer TEXT, useragent TEXT);`;
+          protocol TEXT, httpversion TEXT, secure TEXT, status INTEGER, referer TEXT, useragent TEXT);`;
     db.exec(sqlInit);
 } else {
     console.log("Database exists");
