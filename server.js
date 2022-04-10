@@ -41,12 +41,12 @@ const server = app.listen(HTTP_PORT, () => {
     console.log("Server running on port %PORT%".replace("%PORT%",HTTP_PORT))
 });
 
-if (log != "false") {
+if (args.log != false) {
     const accesslog = fs.createWriteStream('access.log', { flags: 'a' })
     app.use(morgan('combined', { stream: accesslog }))
 }
 
-app.use( (req, res, next) => {
+app.use((req, res, next) => {
 let logdata = {
         remoteaddr: req.ip,
         remoteuser: req.user,
@@ -61,9 +61,16 @@ let logdata = {
     }
     const stmt = db.prepare('INSERT INTO accesslog (remoteaddr, remoteuser, time, method, url, protocol, httpversion, status, referer, useragent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
     const table_info = stmt.run(logdata.remoteaddr, logdata.remoteuser, logdata.time, logdata.method, logdata.url, logdata.protocol, logdata.httpversion, logdata.status, logdata.referer, logdata.useragent)
-    res.status(200);
+    //res.status(200);
     next();
 });
+
+app.get('/app/', (req, res) => {
+    res.statusCode = 200;
+    res.statusMessage = 'OK';
+    res.writeHead( res.statusCode, { 'Content-Type' : 'text/plain' });
+    res.end(res.statusCode+ ' ' +res.statusMessage)
+})
 
 //flip functions 
 function coinFlip() {
@@ -110,11 +117,6 @@ function flipACoin(call) {
   }
 
 // endpoints
-app.get('/app/', (req, res) => {
-    res.statusMessage = 'OK';
-    res.writeHead( res.statusCode, { 'Content-Type' : 'text/plain' });
-    res.end(res.statusCode+ ' ' +res.statusMessage)
-})
 app.get('/app/flip/', (req, res) => {
     res.status(200).json({'flip': coinFlip()})
 })
