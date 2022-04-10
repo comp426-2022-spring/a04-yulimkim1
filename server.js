@@ -46,7 +46,7 @@ if (log != "false") {
     app.use(morgan('combined', { stream: accesslog }))
 }
 
-app.post("/",(req, res, next) => {
+app.use((req, res, next) => {
 let logdata = {
         remoteaddr: req.ip,
         remoteuser: req.user,
@@ -62,7 +62,7 @@ let logdata = {
     }
     const stmt = db.prepare('INSERT INTO accesslog (remoteaddr, remoteuser, time, method, url, protocol, httpversion, secure, status, referer, useragent) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)')
     const table_info = stmt.run(String(logdata.remoteaddr), String(logdata.remoteuser), String(logdata.time), String(logdata.method), String(logdata.url), String(logdata.protocol), String(logdata.httpversion), String(logdata.secure), String(logdata.status), String(logdata.referer), String(logdata.useragent))
-    //res.status(200);
+
     next();
 });
 
