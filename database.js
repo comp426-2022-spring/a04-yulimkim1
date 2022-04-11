@@ -21,7 +21,7 @@ if (row === undefined) {
         referer VARCHAR,
         useragent VARCHAR
     );`;
-    db.exec(sqlInit);
+    db.exec(sqlInit)
 } else {
     console.log("Database exists");
 }
