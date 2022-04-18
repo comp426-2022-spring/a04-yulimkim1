@@ -48,7 +48,7 @@ if (log != "false") {
 
 app.use((req, res, next) => {
 let logdata = {
-        i: id,
+        i: req.id,
         remoteaddr: req.ip,
         remoteuser: req.user,
         time: Date.now(),
